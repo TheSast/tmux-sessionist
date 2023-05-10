@@ -5,23 +5,25 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/helpers.sh"
 
 # global vars passed to the script as arguments
-CURRENT_SESSION_NAME="$1"
+CURRENT_SESSION_ID="$1"
 CURRENT_PANE_ID="$2"
-PANE_CURRENT_PATH="$3"
+PANE_CURRENT_PATH="$4"
 
 number_of_panes() {
-	tmux list-panes -s -t "$CURRENT_SESSION_NAME" |
+	tmux list-panes -s -t "$CURRENT_SESSION_ID" |
 		wc -l |
 		tr -d ' '
 }
 
 create_new_session() {
-	TMUX="" tmux -S "$(tmux_socket)" new-session -c "$PANE_CURRENT_PATH" -d -P -F "#{session_name}"
+	TMUX="" tmux -S "$(tmux_socket)" new-session -c "$PANE_CURRENT_PATH" -d -P -F "#{session_id}"
 }
 
 new_session_pane_id() {
-	local session_name="$1"
-	tmux list-panes -t "$session_name" -F "#{pane_id}"
+	local session_id="$1"
+	tmux list-panes -t "$session_id" -F "#{pane_id}"
+}
+
 }
 
 promote_pane() {
